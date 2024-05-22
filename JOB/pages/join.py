@@ -6,7 +6,7 @@ st.markdown("")
 
 # 정보 입력 받기
 name = st.text_input("이름")
-st.write("name:", name)
+st.write("이름:", name)
 
 id = st.text_input("아이디")
 st.write("id:", id)
@@ -27,7 +27,7 @@ st.session_state.id = id
 st.session_state.pw=pw
 
 # 페이지 이동 버튼
-st.page_link("pages/page_6.py", label="회원가입 완료(click,페이지이동)")
+st.page_link("pages/page_6.py", label="회원가입 완료(첫화면으로 이동)")
 
 # 확인용 결과창
 if st.button('결과 출력'):
