@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  home:
+    build:
+      context: ./cradle-to-grave/home
+      dockerfile: Dockerfile
+    container_name: home_container
+    volumes:
+      - ./cradle-to-grave/home:/home
+    ports:
+      - "5000:5000"  # 필요한 포트로 조정
+
+  kid:
+    build:
+      context: ./cradle-to-grave/kid
+      dockerfile: Dockerfile
+    container_name: kid_container
+    volumes:
+      - ./cradle-to-grave/kid:/kid
+    ports:
+      - "5001:5001"  # 필요한 포트로 조정

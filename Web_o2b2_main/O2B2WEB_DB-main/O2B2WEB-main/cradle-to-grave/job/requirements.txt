@@ -1,0 +1,8 @@
+streamlit
+python-dotenv
+pymongo
+langchain-core
+langchain-openai
+Pillow
+langchain
+langchain-community

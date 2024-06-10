@@ -1,0 +1,51 @@
+# 적절한 베이스 이미지 사용
+FROM python:3.9-slim
+
+# 작업 디렉토리 설정
+WORKDIR /O2B2WEB-main
+
+# 시스템 패키지 설치
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    python3-dev \
+    libjpeg-dev \
+    zlib1g-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# 애플리케이션 파일 복사
+COPY . /O2B2WEB-main
+
+# 필요 패키지 설치
+RUN pip3 install -r requirements.txt
+
+# 필요 의존성 설치
+RUN pip install streamlit
+
+# 포트 노출
+EXPOSE 8501 8502 8503 8504 8505 8506 8507
+
+# 건강 상태 확인
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health || exit 1
+
+# # Streamlit 서버들을 실행하는 스크립트 작성
+# COPY . /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
+
+
+# Streamlit 서버들을 실행하는 스크립트 작성
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo 'streamlit run /O2B2WEB_DB-main/O2B2WEB-main/cradle-to-grave/home/home_before_login.py --server.port=8501 --server.address=0.0.0.0 &' >> /entrypoint.sh && \
+    echo 'streamlit run /O2B2WEB_DB-main/O2B2WEB-main/cradle-to-grave/kid/kid_gamification.py --server.port=8502 --server.address=0.0.0.0 &' >> /entrypoint.sh && \
+    echo 'streamlit run /O2B2WEB_DB-main/O2B2WEB-main/cradle-to-grave/senior/public_organization.py --server.port=8503 --server.address=0.0.0.0 &' >> /entrypoint.sh && \
+    echo 'streamlit run /O2B2WEB_DB-main/O2B2WEB-main/cradle-to-grave/researcher/main.py --server.port=8504 --server.address=0.0.0.0 &' >> /entrypoint.sh && \
+    echo 'streamlit run /O2B2WEB_DB-main/O2B2WEB-main/cradle-to-grave/company/digester_intern.py --server.port=8505 --server.address=0.0.0.0 &' >> /entrypoint.sh && \
+    echo 'streamlit run /O2B2WEB_DB-main/O2B2WEB-main/cradle-to-grave/soldier/welfare.py --server.port=8506 --server.address=0.0.0.0 &' >> /entrypoint.sh && \
+    echo 'streamlit run /O2B2WEB_DB-main/O2B2WEB-main/cradle-to-grave/job/job_selector.py --server.port=8507 --server.address=0.0.0.0 &' >> /entrypoint.sh && \
+    echo 'wait' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+# 엔트리포인트 설정
+ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
