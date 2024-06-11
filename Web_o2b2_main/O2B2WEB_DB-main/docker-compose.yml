@@ -3,20 +3,42 @@ version: '3.9'
 services:
   home:
     build:
-      context: ./cradle-to-grave/home
-      dockerfile: Dockerfile
-    container_name: home_container
-    volumes:
-      - ./cradle-to-grave/home:/home
+      context: ./home
     ports:
-      - "5000:5000"  # 필요한 포트로 조정
+      - "8501:8501" 
 
   kid:
     build:
-      context: ./cradle-to-grave/kid
-      dockerfile: Dockerfile
-    container_name: kid_container
-    volumes:
-      - ./cradle-to-grave/kid:/kid
+      context: ./kid
     ports:
-      - "5001:5001"  # 필요한 포트로 조정
+      - "8502:8502"
+
+  senior:
+    build:
+      context: ./senior
+    ports:
+      - "8503:8503"
+
+  researcher:
+    build:
+      context: ./researcher
+    ports:
+      - "8504:8504"
+
+  company:
+    build:
+      context: ./company
+    ports:
+      - "8505:8505"
+
+  soldier:
+    build:
+      context: ./soldier
+    ports:
+      - "8506:8506"
+
+  job:
+    build:
+      context: ./job
+    ports:
+      - "8507:8507"
