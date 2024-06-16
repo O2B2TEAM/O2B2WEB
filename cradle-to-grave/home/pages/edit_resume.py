@@ -1,12 +1,5 @@
-# pages/edit_resume.py
 import streamlit as st
 from pymongo import MongoClient
-
-st.set_page_config(
-    page_title="노세老世",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
 
 # MongoDB Atlas 클라이언트 설정
 client = MongoClient("mongodb+srv://test:1234@cluster.ct8weib.mongodb.net/o2b2data?retryWrites=true&w=majority")
@@ -35,10 +28,22 @@ if 'logged_in' in st.session_state and st.session_state.logged_in:
                 "안드로이드 개발자", "프론트엔드 개발자", "게임 서버 개발자",
                 "게임 클라이언트 개발자"],
                 default=resume_data.get('jobs', []))
+            
+            # Options 리스트 정의
+            options = ["신입", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15년 이상"]
+            
+            # 기본값이 options에 있는지 확인 후 설정
+            start_year = resume_data.get('start_year', '신입')
+            end_year = resume_data.get('end_year', '2')
+            if start_year not in options:
+                start_year = '신입'
+            if end_year not in options:
+                end_year = '2'
+            
             start_year, end_year = st.select_slider(
                 "경력을 입력 해 주세요",
-                options=["신입", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15년 이상"],
-                value=(resume_data.get('start_year', '신입'), resume_data.get('end_year', '2')))
+                options=options,
+                value=(start_year, end_year))
 
         st.markdown("---")
         
@@ -62,10 +67,7 @@ if 'logged_in' in st.session_state and st.session_state.logged_in:
 
         skill_levels = {}
         for skill in skills:
-            skill_level = resume_data.get('skill_levels', {}).get(skill, '상')
-            if skill_level not in ["상", "중", "하"]:
-                skill_level = '상'
-            level = st.radio(f"{skill} 레벨 선택", ["상", "중", "하"], key=f"level_{skill}", index=["상", "중", "하"].index(skill_level))
+            level = st.radio(f"{skill} 레벨 선택", ["상", "중", "하"], key=f"level_{skill}", index=["상", "중", "하"].index(resume_data.get('skill_levels', {}).get(skill, '상')))
             skill_levels[skill] = level
 
         resume_text = st.text_area("AI가 생성한 이력서 텍스트", value=resume_data.get('resume_text', ''))
