@@ -1,7 +1,13 @@
 import streamlit as st
 
+st.set_page_config(
+    page_title="노세老世",
+    layout="centered",
+    initial_sidebar_state="collapsed",
+)
+
 # Streamlit 애플리케이션 구성
-st.header("노세노세 | AI HR", divider='orange')
+st.header("노세老世 | AI HR", divider='orange')
 st.subheader("인재추천")
 st.markdown(" ")
 
@@ -31,15 +37,7 @@ with col2:
 st.session_state.jobs = jobs
 st.session_state.start_year = start_year
 st.session_state.end_year = end_year
-
+st.markdown("---")
 # 페이지 이동 버튼
 st.page_link("pages/match_output.py", label="인재 추천 받기")
 
-# 결과 출력 버튼
-if st.button('결과 출력'):
-    st.markdown("### 결과:")
-    st.write(f"선택한 직무: {st.session_state.jobs}")
-    st.write(f"입사 연차: {st.session_state.start_year}")
-    st.write(f"퇴사 연차: {st.session_state.end_year}")
-
-st.markdown("---")

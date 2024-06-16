@@ -1,14 +1,25 @@
 import base64
 import io
+import os
 
 import streamlit as st
+from dotenv import load_dotenv
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from PIL import Image
 
+# 환경 변수 로드
+load_dotenv()
+openai_api_key = os.getenv("OPENAI_API_KEY")
 # GPT-4 모델을 호출하는 llm 객체 생성
-llm = ChatOpenAI(api_key="sk-proj-yhsg5NrooNlcqRhn9sjkT3BlbkFJPVlyezvH9aCm3c4LlHeH")
+llm = ChatOpenAI(api_key=openai_api_key)
+
+st.set_page_config(
+    page_title="노세老世",
+    layout="centered",
+    initial_sidebar_state="collapsed",
+)
 
 st.header("노세老世 | AI HR", divider='orange')
 st.subheader("이력서 생성기")
@@ -117,30 +128,8 @@ st.session_state.skills = skills
 st.session_state.skill_levels = skill_levels
 st.session_state.summary = summary
 
+st.markdown("---")
+
 # 페이지 이동 버튼
 st.page_link("pages/resume_maked.py", label="이력서 생성하기")
 
-# 확인용 결과창
-if st.button('결과 출력'):
-    st.markdown("### 결과:")
-    st.write(f"name: {st.session_state.name}")
-    st.write(f"jobs: {st.session_state.jobs}")
-    st.write(f"start_year: {st.session_state.start_year}")
-    st.write(f"end_year: {st.session_state.end_year}")
-    st.write(f"contact: {st.session_state.contact}")
-    st.write(f"education: {st.session_state.education}")
-    st.write(f"cert: {st.session_state.cert}")
-    st.write(f"url: {st.session_state.url}")
-    st.write(f"company: {st.session_state.company}")
-    st.write(f"experience: {st.session_state.experience}")
-    st.write(f"skills: {st.session_state.skills}")
-    st.write(f"skill_levels: {st.session_state.skill_levels}")
-    st.write(f"summary: {st.session_state.summary}")
-
-    if st.session_state.uploaded_image:
-        st.markdown("#### 증명사진:")
-        # base64로 인코딩된 이미지 데이터를 디코딩하여 표시
-        img_data = base64.b64decode(st.session_state.uploaded_image)
-        st.image(Image.open(io.BytesIO(img_data)))
-
-st.markdown("---")

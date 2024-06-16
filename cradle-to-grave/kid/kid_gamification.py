@@ -1,8 +1,8 @@
 import streamlit as st
 
-st.header("노세노세", divider='orange')
+st.header("노세老世", divider='orange')
 
-st.subheader("금융 게임")
+st.markdown("***기초경제개념교육을 위한 게이미피케이션***")
 
 st.markdown(" ")
 
