@@ -20,7 +20,7 @@
 #### .env
 ![image](https://github.com/O2B2TEAM/O2B2WEB/assets/112530099/3bcb09f5-80ab-4b6b-837e-29ee76f926a4)
 
-#### .env 내용
+#### config.toml 내용
 [theme]
 primaryColor="#ff9000"
 backgroundColor="#ffffff"
