@@ -9,7 +9,9 @@ from reportlab.pdfbase import pdfmetrics
 from io import BytesIO
 
 # 폰트 파일 경로를 절대 경로로 설정
-font_path = "C:/Users/sgrhe/OneDrive/문서/2024-1학기/실무웹클라이언트/minju_O2B2WEB-main/O2B2WEB-main/cradle-to-grave/home/fonts/NanumGothic.ttf"
+# current_dir:현재 경로 저장 , font_path: 폰트경로지정(NanumGothic.ttf)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+font_path = os.path.join(current_dir, "..", "fonts", "NanumGothic.ttf")
 
 # NanumGothic 폰트를 reportlab에 등록
 if not os.path.exists(font_path):
