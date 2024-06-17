@@ -35,7 +35,7 @@ cards = [
     "9월 초단", "9월 말단", "9월 끗", "9월 특수",
     "10월 청단", "10월 초단", "10월 말단", "10월 끗",
     "11월 청단", "11월 초단", "11월 말단", "11월 끗",
-    "12월 청단", "12월 초단", "12월 말단", "12월 끗",
+    "12월 청단", "12월 말단", "12월 끗",
     "12월 특수"
 ]
 
@@ -52,8 +52,7 @@ def reset_game():
     st.session_state.player_score = 0
     st.session_state.computer_score = 0
 
-# Ensure the game is started/reset at the beginning
-reset_game()
+
 
 # Function to handle player's turn
 def player_turn(card):
@@ -84,12 +83,15 @@ def check_for_matches(card, player):
 
 st.subheader("노세老世 | 두뇌개발", divider='orange')
 
-col1, col2 = st.columns([6, 1])
+col1, col2 = st.columns([7, 1])
 with col1:
     st.header("맞고 :sunrise_over_mountains:")
 
+with col2:
+    # Ensure the game is started/reset at the beginning
+    if st.button("게임 시작"):
+        reset_game()
 st.markdown(" ")
-
 col1, col2 = st.columns(2)
 with col1:
     with st.container():
@@ -102,15 +104,19 @@ with col2:
         player_images = [card_images[card] for card in st.session_state.player_hand]
         st.image(player_images, width=100, caption=st.session_state.player_hand)
 
-col1, col2 = st.columns([4, 1])  
+col1, col2 = st.columns([4, 1])
 with col1:
-    cols = st.columns(len(st.session_state.player_hand))
-    for idx, card in enumerate(st.session_state.player_hand):
-        with cols[idx]:
-            if st.button(f"{card}", key=card):
-                player_turn(card)
+    if st.session_state.player_hand:
+        cols = st.columns(len(st.session_state.player_hand))
+        for idx, card in enumerate(st.session_state.player_hand):
+            with cols[idx]:
+                if st.button(f"{card}", key=card):
+                    player_turn(card)
+                    break  # Ensure only one card is played per click
+    else:
+        st.write("No cards in hand.")
 with col2:
-    with st.container(border=True):
+    with st.container():
         st.subheader("점수")
         st.write(f"🧑‍🎓: {st.session_state.player_score}")
         st.write(f"💻: {st.session_state.computer_score}")
