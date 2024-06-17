@@ -1,6 +1,15 @@
 # pages/mypage.py
 import streamlit as st
 from pymongo import MongoClient
+import base64
+import sys
+import os
+
+# 현재 디렉토리를 sys.path에 추가하여 상대 경로로 모듈을 임포트할 수 있게 함
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
+
+from pdf_download import create_pdf  # pdf_download.py 파일에서 create_pdf 함수를 임포트
 
 st.set_page_config(
     page_title="노세老世",
@@ -57,7 +66,13 @@ if 'logged_in' in st.session_state and st.session_state.logged_in:
             st.markdown("---")
             col1, col2 = st.columns(2)
             with col1:
-                st.page_link("pages/pdf_download.py", label="PDF 다운로드")
+                pdf_data = create_pdf(resume_data)
+                st.download_button(
+                    label="PDF 다운로드",
+                    data=pdf_data,
+                    file_name=f"{resume_data['name']}_이력서.pdf",
+                    mime="application/pdf"
+                )
             with col2:
                 st.page_link("pages/edit_resume.py", label="이력서 수정하기")
 

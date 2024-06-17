@@ -26,20 +26,23 @@ with col2:
 st.markdown(''':rainbow[From cradle to grave service]''')
 col1,col2,col3,col4,col5= st.columns(5)
 with col1:
-    st.header("어린이")
-    st.markdown('''금융교육''')
+    with st.container():
+        st.button("두뇌개발")
+        st.markdown(":brain: :sunrise_over_mountains:")
+
 with col2:
-    st.header("노인")
-    st.markdown('''노인복지 현황 데이터 보고''')
+    st.button("복지관")
+    st.markdown('''   :spider_web:    :computer:''')
 with col3:
-    st.header("연구소")
-    st.markdown('''자료조사''')
+    st.button("자료조사")
+    st.markdown('''   :school:    :eyes:''')
 with col4:
-    st.header("기업")
-    st.markdown('''데일리 리포트''')
+    st.button("데일리 리포트")
+    st.markdown('''   :newspaper:    :envelope_with_arrow:''')
 with col5:
-    st.header("군인")
-    st.markdown('''군인복지''')
+    st.button("오늘의 운세")
+    st.markdown('''   :male_mage: :fortune_cookie:''')
+
 
 st.markdown("""---""")
 

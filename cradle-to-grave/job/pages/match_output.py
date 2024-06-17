@@ -90,19 +90,26 @@ if len(results) > 0:
                 st.write(f"자기소개: {result['summary']}")
                 st.write(f"이력서 내용: {result['resume_text']}")
                 
+                
                 if st.button(f"연락 보내기", key=result['_id']):
-                    with st.form(key=f"form_{result['_id']}"):
-                        company_name = st.text_input("회사 이름")
-                        contact_info = st.text_input("연락처")
-                        message = st.text_area("메세지")
-                        submit_button = st.form_submit_button(label="보내기")
+                    collection.update_one(
+                    {"_id": result['_id']},  # 조건: 업데이트할 문서를 식별하는 필드
+                    {"$set": {"employ": True}}  # 업데이트: employ 값을 True로 설정
+                    )
+                
+                # if st.button(f"연락 보내기", key=result['_id']):
+                #     with st.form(key=f"form_{result['_id']}"):
+                #         company_name = st.text_input("회사 이름")
+                #         contact_info = st.text_input("연락처")
+                #         message = st.text_area("메세지")
+                #         submit_button = st.form_submit_button(label="보내기")
 
-                        if submit_button:
-                            collection.update_one(
-                                {"_id": result['_id']},
-                                {"$set": {"employ": True, "company_name": company_name, "company_contact": contact_info, "message": message}}
-                            )
-                            st.success("채용 연락을 보냈습니다.")
+                #         if submit_button:
+                #             collection.update_one(
+                #                 {"_id": result['_id']},
+                #                 {"$set": {"employ": True, "company_name": company_name, "company_contact": contact_info, "message": message}}
+                #             )
+                #             st.success("채용 연락을 보냈습니다.")
 
 else:
     st.write("해당 조건에 맞는 인재를 찾을 수 없습니다.")

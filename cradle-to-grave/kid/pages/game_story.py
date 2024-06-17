@@ -1,5 +1,11 @@
 import streamlit as st
 
+st.set_page_config(
+    page_title="노세老世",
+    layout="centered",
+    initial_sidebar_state="collapsed",
+)
+
 # Initialize session state variables
 if 'health' not in st.session_state:
     st.session_state.health = 100
@@ -159,5 +165,3 @@ else:
     st.markdown(" ")
     if st.button("다시 시작하기"):
         reset_game()
-
-
