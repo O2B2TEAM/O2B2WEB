@@ -36,15 +36,6 @@ output_parser = StrOutputParser()
 # 프롬프트 템플릿, GPT-4 모델, 출력 파서를 체인으로 연결
 chain = prompt | llm | output_parser
 
-# 뉴스 스크래핑 함수
-def scrape_naver_news(query):
-    url = f"https://search.naver.com/search.naver?where=news&query={query}"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    articles = soup.find_all('a', {'class': 'news_tit'})
-    news_list = [{'title': article.get_text(), 'link': article['href']} for article in articles]
-    return news_list
-
 st.header("노세老世 | Daily Report", divider='orange')
 st.markdown("오늘의 데일리 리포트를 작성합니다.")
 st.markdown(" ")
