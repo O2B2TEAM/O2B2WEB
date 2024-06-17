@@ -132,4 +132,3 @@ st.markdown("---")
 
 # 페이지 이동 버튼
 st.page_link("pages/resume_maked.py", label="이력서 생성하기")
-

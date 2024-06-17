@@ -121,8 +121,8 @@ def create_pdf(resume_text):
     pdf = FPDF()
     pdf.add_page()
 
-    pdf.add_font("NanumGothic", "", "fonts/NanumGothic.ttf", uni=True)
-    pdf.set_font("NanumGothic", size=11)
+    pdf.add_font("DejaVu", "", "DejaVuSansCondensed.ttf", uni=True)
+    pdf.set_font("DejaVu", size=11)
 
     for line in resume_text.split('\n'):
         pdf.cell(200, 10, txt=line, ln=True)

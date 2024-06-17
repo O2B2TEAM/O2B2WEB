@@ -1,21 +1,45 @@
-import numpy as np
+import base64
+import os
+
 import pandas as pd
 import streamlit as st
 
-st.title("노인복지 사이트 모아보기")
-st.text("description :공기관에서 추천해주는 페이지들과 연계 (모아보기 기능)")
-st.text("search bar")
-st.text("조건 선택")
-st.text("사이트 뷰 박스 (박스 안에는 사이트 이미지와 정보)")
+st.set_page_config(
+    page_title="노세老世",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
 
-st.text("노인 일자리 전국 수행 기관")
-st.text("검색하기")
+st.subheader("노세老世 | 복지관", divider='orange')
+st.markdown("노인 복지와 구직 사이트를 제공합니다.")
+st.markdown(" ")
 
+# Load the CSV file
+file_path = 'dir/site.csv'  # Update this path if necessary
+df = pd.read_csv(file_path)
 
-name=['구분','양로시설 시설수','양로시설 정원','양로시설 현원','노인공동생활가정 시설수','노인공동생활가정 정원',	'노인공동생활가정 현원',	'노인요양시설 시설수',	'노인장기요양법에 의한 미지정 노인요양시설수',	'노인요양시설 정원',	'노인장기요양법에 의한 미지정 노인요양시설정원',	'노인요양시설 현원',	'노인장기요양법에 의한 미지정 노인요양시설현원',	'노인요양공동생활가정 시설수',	'노인장기요양법에 의한 미지정 노인요양공동생활가정시설수',	'노인요양공동생활가정 정원',	'노인장기요양법에 의한 미지정 노인요양공동생활가정시설정원',	'노인요양공동생활가정 현원',	'노인장기요양법에 의한 미지정 노인요양공동생활가정시설현원'
-]
-#데이터프레임 형식으로 저장
-csv = pd.read_csv("dir/file1.csv", sep=",", encoding='utf-8')
+# Streamlit app
+def main():
+    # Multiselector for 'divde' column
+    divde_options = df['DIVIDE'].unique()
+    selected_divdes = st.multiselect('Select divde', divde_options)
 
-df1=pd.appned([name,csv])
-st.dataframe(df1)
+    if selected_divdes:
+        # Filter dataframe based on selected divde
+        filtered_df = df[df['DIVIDE'].isin(selected_divdes)]
+
+        # Display the filtered dataframe
+        cols = st.columns(5)  # Create 5 columns for each row
+        col_index = 0
+
+        for index, row in filtered_df.iterrows():
+            with cols[col_index]:
+                with st.container(border=True):
+                    image_path = f"images/{index}.png"
+                    st.image(image_path)
+                    st.markdown(f"##### {row['APP_NAME']}")
+                    st.markdown(f"[Link to app]({row['APP_LINK']})")
+            col_index = (col_index + 1) % 5  # Move to the next column
+
+if __name__ == "__main__":
+    main()
