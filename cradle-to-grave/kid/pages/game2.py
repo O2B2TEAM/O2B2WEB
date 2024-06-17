@@ -4,7 +4,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="노세老世",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed",
 )
 
@@ -39,6 +39,9 @@ cards = [
     "12월 특수"
 ]
 
+# Map card names to image file names
+card_images = {card: f"images/{card}.png" for card in cards}
+
 # Function to reset the game
 def reset_game():
     st.session_state.deck = cards.copy()
@@ -48,6 +51,9 @@ def reset_game():
     st.session_state.computer_hand = [st.session_state.deck.pop() for _ in range(10)]
     st.session_state.player_score = 0
     st.session_state.computer_score = 0
+
+# Ensure the game is started/reset at the beginning
+reset_game()
 
 # Function to handle player's turn
 def player_turn(card):
@@ -76,42 +82,49 @@ def check_for_matches(card, player):
         for match in matches:
             st.session_state.field.remove(match)
 
-st.header("노세老世 | 두뇌개발", divider='orange')
-col1,col2=st.columns([4,1])
+st.subheader("노세老世 | 두뇌개발", divider='orange')
+
+col1, col2 = st.columns([6, 1])
 with col1:
-    st.subheader("맞고 :sunrise_over_mountains:")
-with col2:
-    if st.button("게임 시작"):
-        reset_game()
+    st.header("맞고 :sunrise_over_mountains:")
+
 st.markdown(" ")
 
-col1,col2=st.columns(2)
+col1, col2 = st.columns(2)
 with col1:
-    with st.container(border=True):
+    with st.container():
         st.subheader("필드")
-        st.write(st.session_state.field)
-    with st.container(border=True):
-        st.subheader("플레이어")
-        st.write(st.session_state.player_hand)
+        field_images = [card_images[card] for card in st.session_state.field]
+        st.image(field_images, width=100, caption=st.session_state.field)
 with col2:
-    for card in st.session_state.player_hand:
-        if st.button(f"Play {card}", key=card):
-            player_turn(card)
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
+    with st.container():
+        st.subheader("플레이어")
+        player_images = [card_images[card] for card in st.session_state.player_hand]
+        st.image(player_images, width=100, caption=st.session_state.player_hand)
+
+col1, col2 = st.columns([4, 1])  
+with col1:
+    cols = st.columns(len(st.session_state.player_hand))
+    for idx, card in enumerate(st.session_state.player_hand):
+        with cols[idx]:
+            if st.button(f"{card}", key=card):
+                player_turn(card)
+with col2:
     with st.container(border=True):
         st.subheader("점수")
-        st.write(f"	:man_with_gua_pi_mao:: {st.session_state.player_score}")
-        st.write(f"	:desktop_computer:: {st.session_state.computer_score}")
+        st.write(f"🧑‍🎓: {st.session_state.player_score}")
+        st.write(f"💻: {st.session_state.computer_score}")
         if st.session_state.player_score >= 10:
             st.success("플레이어 승리!")
         elif st.session_state.computer_score >= 10:
             st.error("컴퓨터 승리!")
+st.markdown("")
+st.markdown("")
+st.markdown("")
+st.markdown("")
+st.markdown("")
 st.markdown("---")
-'''
+st.markdown('''
 ### 규칙 
 - **카드 구성**: 화투 카드 48장을 사용합니다.
 - **플레이어**: 2명의 플레이어 (플레이어와 컴퓨터).
@@ -132,5 +145,4 @@ st.markdown("---")
   - 컴퓨터가 10점 이상일 경우 "컴퓨터 승리!" 메시지가 표시됩니다.
 
 이 게임은 각 플레이어가 번갈아가며 카드를 내고, 필드에서 매칭되는 카드를 통해 점수를 획득하는 방식으로 진행됩니다. 10점 이상을 먼저 달성하는 플레이어가 승리합니다.
-
-'''
+''')
